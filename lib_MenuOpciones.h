@@ -7,6 +7,7 @@
 #include "lib_CrearCurso.h"
 #include "lib_Inscripcion.h"
 #include "lib_ListadoCurso.h"
+#include "lib_Informacion_Curso.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
         cout<<"2. Registrar Estudiante"<<endl;
         cout<<"3. Ficha de Inscripción"<<endl;
         cout<<"4. Lista de estudiantes por curso"<<endl;
-        cout<<"5. Lista de cupos por curso"<<endl;
+        cout<<"5. Información por curso"<<endl;
         cout<<"6. Registro de notas"<<endl;
         cout<<"7. Libreta escolar"<<endl;
         cout<<"8. Cuadro de honor"<<endl;
@@ -70,7 +71,7 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                 cout << "1. Cuarto de secundaria" << endl;
                 cout << "2. Quinto de secundaria" << endl;
                 cout << "3. Sexto de secundaria" << endl;
-                cout << "0. Salir" << endl;
+                cout << "0. Volver" << endl;
                 cout << "Seleccione la opción: ";
                 cin >> subopcion;
                 switch (subopcion)
@@ -85,7 +86,6 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                         Seleccionar_curso(Archivo_crear_curso, Archivo_Inscripcion, Archivo_Registro_Estudiantes, 3);
                         break;
                     case 0:
-                        cout << "Volviendo..." << endl;
                         break;
                     
                     default:
@@ -95,7 +95,7 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                 break;
 
             case 5:
-                /* code */
+                Mostrar_Inf_Por_Curso(Archivo_crear_curso);
                 break;
 
             case 6:
