@@ -17,16 +17,6 @@ struct Notas_estudiante
     char Estado[15];
 };
 
-void Registrar_Nota(string ArchivoBin);
-
-int main()
-{
-    system("chcp 65001");
-    string ArchivoBin = "Notas_Estudiante.bin";
-    Registrar_Nota(ArchivoBin);
-    return 0;
-}
-
 void Registrar_Nota(string ArchivoBin)
 {
     Notas_estudiante nota;
@@ -75,5 +65,6 @@ void Registrar_Nota(string ArchivoBin)
     
     binario.close();  
 }
+
 
 
