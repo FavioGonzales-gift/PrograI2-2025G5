@@ -1,3 +1,6 @@
+#ifndef LIB_REGISTROESTUDIANTE_H
+#define LIB_REGISTROESTUDIANTE_H
+
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -92,3 +95,5 @@ void registrarEstudiante(string Archivo_Registro_Estudiantes)
         cout << "\nEstudiante registrado correctamente";
     }
 }
+
+#endif

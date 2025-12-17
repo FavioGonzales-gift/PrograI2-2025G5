@@ -1,8 +1,12 @@
+#ifndef LIB_MENUOPCIONES_H
+#define LIB_MENUOPCIONES_H
+
 #include <iostream>
 #include <string>
 #include "lib_RegistroEstudiante.h"
 #include "lib_CrearCurso.h"
 #include "lib_Inscripcion.h"
+#include "lib_ListadoCurso.h"
 
 using namespace std;
 
@@ -36,10 +40,29 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
 
             case 3:
                 cout << "1. Llenar inscripción" << endl;
-                cout << "2. Mostrar inscrpción" << endl;
+                cout << "2. Modificar inscripción" << endl;
+                cout << "3. Mostrar todas las inscripciones" << endl;
                 cout << "0. Volver" << endl;
                 cout << "Seleccione la opción: ";
                 cin >> subopcion;
+                switch (subopcion)
+                {
+                    case 1:
+                        LlenarInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
+                        break;
+                    case 2:
+                        ModificarEstadoInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
+                        break;
+                    case 3:
+                        MostrarInscripciones(Archivo_Inscripcion);
+                        break;
+                    case 0:
+                        break;
+                    
+                    default:
+                        cout << "Opción no válida intente de nuevo..." << endl;
+                        break;
+                }
                 break;
 
             case 4:
@@ -53,16 +76,16 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                 switch (subopcion)
                 {
                     case 1:
-                        /* code */
+                        Seleccionar_curso(Archivo_crear_curso, Archivo_Inscripcion, Archivo_Registro_Estudiantes, 1);
                         break;
                     case 2:
-                        /* code */
+                        Seleccionar_curso(Archivo_crear_curso, Archivo_Inscripcion, Archivo_Registro_Estudiantes, 2);
                         break;
                     case 3:
-                        /* code */
+                        Seleccionar_curso(Archivo_crear_curso, Archivo_Inscripcion, Archivo_Registro_Estudiantes, 3);
                         break;
                     case 0:
-                        /* code */
+                        cout << "Volviendo..." << endl;
                         break;
                     
                     default:
@@ -99,3 +122,5 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
     } while (opcion!=0);
         
 }
+
+#endif

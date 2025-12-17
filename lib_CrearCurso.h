@@ -1,3 +1,6 @@
+#ifndef LIB_CREARCURSO_H
+#define LIB_CREARCURSO_H
+
 #include <iostream>
 #include <string>
 #include <string.h>
@@ -55,6 +58,7 @@ void Crear_curso(string Archivo_crear_curso)
 
         aula.cupos_disponibles = aula.cupo_maximo;
 
+        cin.ignore();
         cout << "Ingrese el nombre del profesor: " << endl;
         cin.getline(aula.profesor, 200);
 
@@ -64,3 +68,5 @@ void Crear_curso(string Archivo_crear_curso)
         cout << "\nCurso creado correctamente" << endl;
     }
 }
+
+#endif
