@@ -1,200 +1,157 @@
+#ifndef LIB_LIBRETANOTAS_H
+#define LIB_LIBRETANOTAS_H
+
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <cstring>
+#include <vector>
+#include "lib_RegistroEstudiante.h"  
+#include "lib_Inscripcion.h"         
+#include "lib_CrearCurso.h"          
+#include "lib_RegistroNotas.h"       
 
 using namespace std;
 
-struct Notas_estudiante
+void MostrarLibretaEscolar(string Archivo_Registro_Estudiantes, string Archivo_Inscripcion, string Archivo_crear_curso, string Archivo_Registro_Notas)
 {
-    int CI_estudiante;;
-    double Matematica;
-    double Fisica;
-    double Quimica;
-    double Biologia;
-    double Lenguaje;
-    double Promedio;
-    char Estado[15];
-};
+    int CI_buscar;
+    cout << "Ingrese el CI del estudiante para ver su libreta: ";
+    cin >> CI_buscar;
+    bool encontrado = false;
 
-void Menu_opciones(string ArchivoBin, string ArchivoTxt);
-void Registrar_Nota(string ArchivoBin, string ArchivoTxt);
-void Lista_notas(string ArchivoBin, string ArchivoTxt);
-void Eliminar_estudiante(string ArchivoBin);
+    ifstream archivoEstudiantes;
+    archivoEstudiantes.open(Archivo_Registro_Estudiantes, ios::binary);
+    Estudiante student;
+    string nombre_estudiante = "";
+    int edad_estudiante = 0;
 
-int main()
-{
-    system("chcp 65001");
-    string ArchivoBin = "Notas_Estudiante.bin";
-    string ArchivoTxt = "Notas_Estudiante.txt";
-    Menu_opciones(ArchivoBin, ArchivoTxt);
-    return 0;
-}
-
-void Menu_opciones(string ArchivoBin, string ArchivoTxt)
-{
-    int opcion = 0;
-    do
+    if (archivoEstudiantes)
     {
-        system("cls");
-        cout << "\t---MENU---" << endl;
-        cout << "1. Ingresar notas" << endl;
-        cout << "2. Listar notas" << endl;
-        cout << "3. Eliminar nota" << endl;
-        cout << "0. Salir" << endl;
-        cout << "Ingrese una opcion: ";
-        cin >> opcion;
-        cin.ignore();
-
-        switch (opcion)
+        while (archivoEstudiantes.read((char*)&student, sizeof(Estudiante)))
         {
-            case 1:
-                system("cls");
-                Registrar_Nota(ArchivoBin, ArchivoTxt);
-                system("pause");
-                break;
-            case 2:
-                system("cls");
-                Lista_notas(ArchivoBin, ArchivoTxt);
-                system("pause");
-                break;
-            case 3:
-                system("cls");
-                Eliminar_estudiante(ArchivoBin);
-                break;
-            case 0:
-                system("cls");
-                cout << "Saliendo...";
-                break;
-            
-            default:
-                system("cls");
-                cout << "Opcion no valida, intente de nuevo" << endl;
-                system("pause");
-                break;
-        }
-    } while (opcion != 0);
-    
-}
-
-void Registrar_Nota(string ArchivoBin, string ArchivoTxt)
-{
-    Notas_estudiante nota;
-
-    ofstream binario(ArchivoBin, ios::binary | ios::app);
-    ofstream texto(ArchivoTxt, ios::app);
-
-    if (!binario || !texto)
-    {
-        cout << "Error al abrir archivos\n";
-        return;
-    }
-
-    cout << "Ingrese el nombre del estudiante: ";
-    cin >> nota.CI_estudiante;
-
-    cout << "Ingrese la nota de Matemáticas: ";
-    cin >> nota.Matematica;
-
-    cout << "Ingrese la nota de Física: ";
-    cin >> nota.Fisica;
-
-    cout << "Ingrese la nota de Química: ";
-    cin >> nota.Quimica;
-
-    cout << "Ingrese la nota de Biología: ";
-    cin >> nota.Biologia;
-
-    cout << "Ingrese la nota de Lenguaje: ";
-    cin >> nota.Lenguaje;
-
-    nota.Promedio = (nota.Matematica + nota.Fisica + nota.Quimica + nota.Biologia + nota.Lenguaje) / 5;
-    
-    if (nota.Promedio < 51)
-    {
-        strcpy(nota.Estado, "REPROBADO");
-    }
-    
-    if (nota.Promedio >= 51 && nota.Promedio <= 100);
-    {
-        strcpy(nota.Estado, "APROBADO");
-    }
-    
-    binario.write((char*)&nota, sizeof(Notas_estudiante));
-
-    texto << nota.CI_estudiante << " ";
-    texto << nota.Matematica << " ";
-    texto << nota.Fisica << " ";
-    texto << nota.Quimica << " ";
-    texto << nota.Promedio << " ";
-    texto << nota.Estado << endl;
-    
-    binario.close();
-    texto.close();
-    
-}
-
-void Lista_notas(string ArchivoBin, string ArchivoTxt)
-{
-    Notas_estudiante nota;
-    ifstream binario(ArchivoBin, ios::binary);
-    ofstream texto(ArchivoTxt); 
-
-    if (!binario || !texto)
-    {
-        cout << "Error al abrir archivos" << endl;
-        return;
-    }
-
-    cout << "CI\tMAT\tFIS\tQUI\tBIO\tLEN\tPROM\tESTADO\n";
-
-    while (binario.read((char*)&nota, sizeof(Notas_estudiante)))
-    {
-        cout << nota.CI_estudiante << "\t";
-        cout << nota.Matematica << "\t";
-        cout << nota.Fisica << "\t";
-        cout << nota.Quimica << "\t";
-        cout << nota.Biologia << "\t";
-        cout << nota.Lenguaje << "\t";
-        cout << nota.Promedio << "\t";
-        cout << nota.Estado << endl;
-
-        texto << nota.CI_estudiante << " ";
-        texto << nota.Matematica << " ";
-        texto << nota.Fisica << " ";
-        texto << nota.Quimica << " ";
-        texto << nota.Biologia << " ";
-        texto << nota.Lenguaje << " ";
-        texto << nota.Promedio << " ";
-        texto << nota.Estado << endl;
-    }
-
-    binario.close();
-    texto.close();
-}
-
-void Eliminar_estudiante(string ArchivoBin)
-{
-    int ci;
-    Notas_estudiante nota;
-    fstream archivo;
-    archivo.open(ArchivoBin,ios::binary|ios::app);
-    if (archivo.good())
-    {
-        cout << "Ingrese el CI del estudiante a elminar: ";
-        cin >> nota.CI_estudiante;
-        while (archivo.read((char*)&nota, sizeof(Notas_estudiante)))
-        {
-            if (nota.CI_estudiante == ci)
+            if (student.CI_estudiante == CI_buscar)
             {
-                archivo.seekp(-sizeof(Notas_estudiante), ios::cur);
+                nombre_estudiante = string(student.nombre_estudiante);
+                encontrado = true;
+                break;
             }
         }
+        archivoEstudiantes.close();
     }
-    else
+
+    if (!encontrado)
     {
-        cout << "Archivo no encontrado" << endl;
+        cout << "\nNo se encontró al estudiante "<< endl;
+        return;
     }
-    
-    archivo.close();
+
+    ifstream archivoInscrip;
+    archivoInscrip.open(Archivo_Inscripcion, ios::binary);
+    Inscripcion ins;
+    int codigoCurso = -1;
+
+    encontrado = false;
+    if (archivoInscrip)
+    {
+        while (archivoInscrip.read((char*)&ins, sizeof(Inscripcion)))
+        {
+            if (ins.CI_estudiante == CI_buscar && ins.estado_inscripcion == 1) 
+            {
+                codigoCurso = ins.codigoCurso;
+                encontrado = true;
+                break;
+            }
+        }
+        archivoInscrip.close();
+    }
+
+    if (!encontrado)
+    {
+        cout << "\nEl estudiante no está inscrito o su inscripción no está ACEPTADA." << endl << endl;
+        return;
+    }
+
+    ifstream archivoCursos;
+    archivoCursos.open(Archivo_crear_curso, ios::binary);
+    Curso curso;
+    string nivel = "Desconocido";
+    string paralelo= "Error";
+
+    vector<string> niveles = {"4to de secundaria", "5to de secundaria", "6to de secundaria"};
+    vector<string> paralelos = {"A", "B"};
+
+    if (archivoCursos)
+    {
+        while (archivoCursos.read((char*)&curso, sizeof(Curso)))
+        {
+            if (curso.codigoCurso == codigoCurso)
+            {
+                if (curso.nivel >= 1 && curso.nivel <= 3)
+                {
+                    nivel = niveles[curso.nivel-1];
+                }
+                if (curso.paralelo >= 1 && curso.paralelo <= 2)
+                {  
+                    paralelo = paralelos[curso.paralelo-1];
+                }
+                break;
+            }
+        }
+        archivoCursos.close();
+    }
+
+    ifstream archivoNotas;
+    archivoNotas.open(Archivo_Registro_Notas, ios::binary);
+    Notas_estudiante notas;
+    bool notasEncontradas = false;
+
+    double matematica = 0, fisica = 0, quimica = 0, biologia = 0, lenguaje = 0, promedio = 0;
+    string estado = "Sin notas";
+
+    if (archivoNotas)
+    {
+        while (archivoNotas.read((char*)&notas, sizeof(Notas_estudiante)))
+        {
+            if (notas.CI_estudiante == CI_buscar)
+            {
+                matematica = notas.Matematica;
+                fisica = notas.Fisica;
+                quimica = notas.Quimica;
+                biologia = notas.Biologia;
+                lenguaje = notas.Lenguaje;
+                promedio = notas.Promedio;
+                estado = string(notas.Estado);
+                notasEncontradas = true;
+                break;
+            }
+        }
+        archivoNotas.close();
+    }
+
+    if (!notasEncontradas)
+    {
+        cout << "\nNo se encontraron notas registradas para este estudiante." << endl << endl;
+        return;
+    }
+
+    cout << endl;
+    cout << "\t\t*****************************************************************" << endl;
+    cout << "\t\t                       LIBRETA ESCOLAR" << endl;
+    cout << "\t\t*****************************************************************" << endl;
+    cout << "Nombre: " << nombre_estudiante << "\tCI: " << CI_buscar << endl;
+    cout << "Curso: " << codigoCurso << "\tNivel: " << nivel << "\tParalelo " << paralelo << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "                    CALIFICACIONES" << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "Matemáticas    : " << matematica << endl;
+    cout << "Física         : " << fisica << endl;
+    cout << "Química        : " << quimica << endl;
+    cout << "Biología       : " << biologia << endl;
+    cout << "Lenguaje       : " << lenguaje << endl;
+    cout << "-----------------------------------------------------------------" << endl;
+    cout << "Promedio final : " << promedio << endl;
+    cout << "Estado         : " << estado << endl;
+    cout << endl;
 }
+
+#endif
