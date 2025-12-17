@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <iomanip>
 #include "lib_CrearCurso.h"
 
 struct Inscripcion
@@ -230,7 +229,6 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
     }
 }
 
-
 void MostrarInscripciones(const string& Archivo_Inscripcion, const string& Archivo_Txt_Salida = "Lista_Inscripciones.txt")
 {
     ifstream archivo_bin(Archivo_Inscripcion, ios::binary);
@@ -238,64 +236,46 @@ void MostrarInscripciones(const string& Archivo_Inscripcion, const string& Archi
 
     if (!archivo_bin)
     {
-        cout << "Error: No se pudo abrir el archivo binario de inscripciones.\n";
+        cout << "Error: No se pudo abrir el archivo de inscripciones.\n";
         system("pause");
         return;
     }
 
     if (!archivo_txt)
     {
-        cout << "Error: No se pudo crear el archivo de texto de salida.\n";
+        cout << "Error: No se pudo crear el archivo de texto.\n";
         archivo_bin.close();
         system("pause");
         return;
     }
 
     Inscripcion ins;
-    vector<string> Estados = {"", "ACEPTADO", "RECHAZADO", "PENDIENTE"};  // índice 1,2,3
+    vector<string> Estados = {"", "ACEPTADO", "RECHAZADO", "PENDIENTE"};
     bool hayInscripciones = false;
 
     system("cls");
     cout << "\n\t\t===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
 
-    cout << left 
-         << setw(15) << "CI ESTUDIANTE"
-         << setw(15) << "CÓDIGO CURSO"
-         << setw(15) << "FECHA"
-         << setw(15) << "ESTADO" << endl;
-    cout << string(60, '-') << endl;
-
     archivo_txt << "===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
-    archivo_txt << left
-                << setw(15) << "CI ESTUDIANTE"
-                << setw(15) << "CODIGO CURSO"
-                << setw(15) << "FECHA"
-                << setw(15) << "ESTADO" << endl;
-    archivo_txt << string(60, '-') << endl;
 
     while (archivo_bin.read((char*)&ins, sizeof(Inscripcion)))
     {
         hayInscripciones = true;
 
-        string estado_str = (ins.estado_inscripcion >= 1 && ins.estado_inscripcion <= 3)
-                            ? Estados[ins.estado_inscripcion]
-                            : "DESCONOCIDO";
+        string estado_str = (ins.estado_inscripcion >= 1 && ins.estado_inscripcion <= 3)? Estados[ins.estado_inscripcion]: "DESCONOCIDO";
 
-        cout << left
-             << setw(15) << ins.CI_estudiante
-             << setw(15) << ins.codigoCurso
-             << setw(15) << ins.fecha_inscripcion
-             << setw(15) << estado_str << endl;
+        cout << "CI del Estudiante    : " << ins.CI_estudiante << endl;
+        cout << "Código del Curso     : " << ins.codigoCurso << endl;
+        cout << "Fecha de Inscripción : " << ins.fecha_inscripcion << endl;
+        cout << "Estado               : " << estado_str << endl;
+        cout << "----------------------------------------" << endl;
 
-        archivo_txt << left
-                    << setw(15) << ins.CI_estudiante
-                    << setw(15) << ins.codigoCurso
-                    << setw(15) << ins.fecha_inscripcion
-                    << setw(15) << estado_str << endl;
+        archivo_txt << "CI del Estudiante    : " << ins.CI_estudiante << endl;
+        archivo_txt << "Código del Curso     : " << ins.codigoCurso << endl;
+        archivo_txt << "Fecha de Inscripción : " << ins.fecha_inscripcion << endl;
+        archivo_txt << "Estado               : " << estado_str << endl;
+        archivo_txt << "----------------------------------------" << endl;
     }
-
-    cout << string(60, '-') << endl;
-    archivo_txt << string(60, '-') << endl;
 
     if (!hayInscripciones)
     {
@@ -304,9 +284,7 @@ void MostrarInscripciones(const string& Archivo_Inscripcion, const string& Archi
     }
     else
     {
-        cout << "Total de inscripciones encontradas: " 
-             << (archivo_bin ? "varias" : "0") << endl;  // Mejor contar antes, pero simplificado
-        cout << "\nReporte guardado exitosamente en: " << Archivo_Txt_Salida << endl;
+        cout << "\nReporte generado correctamente en: " << Archivo_Txt_Salida << endl;
     }
 
     cout << "\n";
