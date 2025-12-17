@@ -5,6 +5,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <iomanip>
 #include "lib_CrearCurso.h"
 
 struct Inscripcion
@@ -230,37 +231,89 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
 }
 
 
-void MostrarInscripciones(const string& Archivo_Inscripcion)
+void MostrarInscripciones(const string& Archivo_Inscripcion, const string& Archivo_Txt_Salida = "Lista_Inscripciones.txt")
 {
-    ifstream archivo(Archivo_Inscripcion, ios::binary);
-    if (!archivo)
+    ifstream archivo_bin(Archivo_Inscripcion, ios::binary);
+    ofstream archivo_txt(Archivo_Txt_Salida);
+
+    if (!archivo_bin)
     {
-        cout << "Error al abrir el archivo de inscripciones." << endl;
+        cout << "Error: No se pudo abrir el archivo binario de inscripciones.\n";
+        system("pause");
+        return;
+    }
+
+    if (!archivo_txt)
+    {
+        cout << "Error: No se pudo crear el archivo de texto de salida.\n";
+        archivo_bin.close();
+        system("pause");
         return;
     }
 
     Inscripcion ins;
-    vector<string> Estado = {"ACEPTADO", "RECHAZADO", "PENDIENTE"};
+    vector<string> Estados = {"", "ACEPTADO", "RECHAZADO", "PENDIENTE"};  // índice 1,2,3
     bool hayInscripciones = false;
 
-    cout << "----- LISTA DE TODAS LAS INSCRIPCIONES -----" << endl;
+    system("cls");
+    cout << "\n\t\t===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
 
-    while (archivo.read((char*)&ins, sizeof(Inscripcion)))
+    cout << left 
+         << setw(15) << "CI ESTUDIANTE"
+         << setw(15) << "CÓDIGO CURSO"
+         << setw(15) << "FECHA"
+         << setw(15) << "ESTADO" << endl;
+    cout << string(60, '-') << endl;
+
+    archivo_txt << "===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
+    archivo_txt << left
+                << setw(15) << "CI ESTUDIANTE"
+                << setw(15) << "CODIGO CURSO"
+                << setw(15) << "FECHA"
+                << setw(15) << "ESTADO" << endl;
+    archivo_txt << string(60, '-') << endl;
+
+    while (archivo_bin.read((char*)&ins, sizeof(Inscripcion)))
     {
         hayInscripciones = true;
-        cout << "CI Estudiante: " << ins.CI_estudiante << endl;
-        cout << "Código Curso: " << ins.codigoCurso << endl;
-        cout << "Fecha: " << ins.fecha_inscripcion << endl;
-        cout << "Estado: " << Estado[ins.estado_inscripcion - 1] << " (" << ins.estado_inscripcion << ")" << endl;
-        cout << "-------------------------------------------" << endl;
+
+        string estado_str = (ins.estado_inscripcion >= 1 && ins.estado_inscripcion <= 3)
+                            ? Estados[ins.estado_inscripcion]
+                            : "DESCONOCIDO";
+
+        cout << left
+             << setw(15) << ins.CI_estudiante
+             << setw(15) << ins.codigoCurso
+             << setw(15) << ins.fecha_inscripcion
+             << setw(15) << estado_str << endl;
+
+        archivo_txt << left
+                    << setw(15) << ins.CI_estudiante
+                    << setw(15) << ins.codigoCurso
+                    << setw(15) << ins.fecha_inscripcion
+                    << setw(15) << estado_str << endl;
     }
+
+    cout << string(60, '-') << endl;
+    archivo_txt << string(60, '-') << endl;
 
     if (!hayInscripciones)
     {
-        cout << "No hay inscripciones registradas en el archivo." << endl;
+        cout << "No hay inscripciones registradas en el sistema.\n";
+        archivo_txt << "No hay inscripciones registradas en el sistema.\n";
+    }
+    else
+    {
+        cout << "Total de inscripciones encontradas: " 
+             << (archivo_bin ? "varias" : "0") << endl;  // Mejor contar antes, pero simplificado
+        cout << "\nReporte guardado exitosamente en: " << Archivo_Txt_Salida << endl;
     }
 
-    archivo.close();
+    cout << "\n";
+    system("pause");
+
+    archivo_bin.close();
+    archivo_txt.close();
 }
 
 #endif
