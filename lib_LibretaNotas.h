@@ -12,10 +12,7 @@
 
 using namespace std;
 
-void MostrarLibretaEscolar(string Archivo_Registro_Estudiantes, 
-                           string Archivo_Inscripcion, 
-                           string Archivo_crear_curso, 
-                           string Archivo_Registro_Notas)
+void MostrarLibretaEscolar(string Archivo_Registro_Estudiantes, string Archivo_Inscripcion, string Archivo_crear_curso, string Archivo_Registro_Notas)
 {
     int CI_buscar;
     cout << "Ingrese el CI del estudiante para ver su libreta: ";
