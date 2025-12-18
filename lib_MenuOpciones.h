@@ -58,10 +58,12 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                     case 1:
                         system("cls");
                         LlenarInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
+                        system("pause");
                         break;
                     case 2:
                         system("cls");
                         ModificarEstadoInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
+                        system("pause");
                         break;
                     case 3:
                         system("cls");

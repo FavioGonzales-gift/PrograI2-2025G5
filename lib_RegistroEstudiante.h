@@ -85,8 +85,11 @@ void registrarEstudiante(string Archivo_Registro_Estudiantes)
         cin >> student.tutor_estudiante.parentesco_tutor;
 
         cout << "Ingrese la fecha de nacimiento del estudiante (DD/MM/AA): ";
+        cout << "Día: ";
         cin >> student.nacimiento_estudiante.dia;
+        cout << "Mes: ";
         cin >> student.nacimiento_estudiante.mes;
+        cout << "Año: ";
         cin >> student.nacimiento_estudiante.anio;
 
         archivo.write((char *)&student, sizeof(Estudiante));

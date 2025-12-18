@@ -158,15 +158,15 @@ void MostrarCuadroDeHonor(string Archivo_crear_curso, string Archivo_Inscripcion
         {
             limite = 3;
         }
-        cout << "------------------------CUADRO DE HONOR------------------------" << endl;
-        cout << "***************************************************************" << endl;
-        cout << "Posición \tCI \tNombre \t\tPromedio" << endl;
-        cout << "-----------------------------------------------------------------" << endl;
+        cout << "\t------------------------CUADRO DE HONOR------------------------" << endl;
+        cout << "******************************************************************************" << endl;
+        cout << "Posición \tCI \t\tNombre \t\t\t\tPromedio" << endl;
+        cout << "------------------------------------------------------------------------------" << endl;
 
-        archivo_txt << "------------------------CUADRO DE HONOR------------------------" << endl;
-        archivo_txt << "***************************************************************" << endl;
-        archivo_txt << "Posición \tCI \tNombre \t\tPromedio" << endl;
-        archivo_txt << "-----------------------------------------------------------------" << endl;
+        archivo_txt << "\t------------------------CUADRO DE HONOR------------------------" << endl;
+        archivo_txt << "******************************************************************************" << endl;
+        archivo_txt << "Posición \tCI \t\tNombre \t\t\t\tPromedio" << endl;
+        archivo_txt << "------------------------------------------------------------------------------" << endl;
 
         for (int i = 0; i < limite; i++)
         {
