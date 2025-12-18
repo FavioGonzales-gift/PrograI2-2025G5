@@ -8,15 +8,19 @@
 #include "lib_Inscripcion.h"
 #include "lib_ListadoCurso.h"
 #include "lib_Informacion_Curso.h"
+#include "lib_RegistroNotas.h"
+#include "lib_LibretaNotas.h"
+#include "lib_Cuadro_Honor.h"
 
 using namespace std;
 
-void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, string Archivo_Inscripcion)
+void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, string Archivo_Inscripcion, string Archivo_Registro_Notas, string Archivo_Inscritos_txt, string Archivo_Info_Cursos_txt, string Archivo_Cuadro_Honor_txt)
 {
     int opcion;
     int subopcion;
     do
     {
+        system("cls");
         cout<<"\t-----MENÚ DE OPCIONES-----"<<endl;
         cout<<"1. Crear curso"<<endl;
         cout<<"2. Registrar Estudiante"<<endl;
@@ -32,14 +36,17 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
         switch (opcion)
         {
             case 1:
+                system("cls");
                 Crear_curso(Archivo_crear_curso);
                 break;
 
             case 2:
+                system("cls");
                 registrarEstudiante(Archivo_Registro_Estudiantes);
                 break;
 
             case 3:
+                system("cls");
                 cout << "1. Llenar inscripción" << endl;
                 cout << "2. Modificar inscripción" << endl;
                 cout << "3. Mostrar todas las inscripciones" << endl;
@@ -49,24 +56,31 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                 switch (subopcion)
                 {
                     case 1:
+                        system("cls");
                         LlenarInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
                         break;
                     case 2:
+                        system("cls");
                         ModificarEstadoInscripcion(Archivo_Inscripcion, Archivo_crear_curso);
                         break;
                     case 3:
-                        MostrarInscripciones(Archivo_Inscripcion);
+                        system("cls");
+                        MostrarInscripciones(Archivo_Inscripcion, Archivo_Inscritos_txt);
+                        system("pause");
                         break;
                     case 0:
                         break;
                     
                     default:
+                        system("cls");
                         cout << "Opción no válida intente de nuevo..." << endl;
+                        system("pause");
                         break;
                 }
                 break;
 
             case 4:
+                system("cls");
                 cout << "-----SELECCIONAR CURSO-----" << endl;
                 cout << "1. Cuarto de secundaria" << endl;
                 cout << "2. Quinto de secundaria" << endl;
@@ -95,22 +109,52 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
                 break;
 
             case 5:
-                Mostrar_Inf_Por_Curso(Archivo_crear_curso);
+                system("cls");
+                Mostrar_Inf_Por_Curso(Archivo_crear_curso, Archivo_Info_Cursos_txt);
+                system("pause");
                 break;
 
             case 6:
-                /* code */
+                system("cls");
+                cout << "\t---MENU---" << endl;
+                cout << "1. Ingresar notas" << endl;
+                cout << "2. Modificar notas" << endl;
+                cout << "0. Volver" << endl;
+                cout << "Ingrese una opcion: ";
+                cin >> subopcion;
+                switch (subopcion)
+                {
+                case 1:
+                    system("cls");
+                    Registrar_Nota(Archivo_Registro_Notas);
+                    system("pause");
+                    break;
+                case 2:
+                    system("cls");
+                    Modificar_Nota(Archivo_Registro_Notas);
+                    system("pause");
+                    break;
+                case 0:
+                    break;
+                default:
+                    break;
+                }
                 break;
 
             case 7:
-                /* code */
+                system("cls");
+                MostrarLibretaEscolar(Archivo_Registro_Estudiantes, Archivo_Inscripcion, Archivo_crear_curso, Archivo_Registro_Notas);
+                system("pause");
                 break;
 
             case 8:
-                /* code */
+                system("cls");
+                MostrarCuadroDeHonor(Archivo_crear_curso, Archivo_Inscripcion, Archivo_Registro_Estudiantes, Archivo_Registro_Notas, Archivo_Cuadro_Honor_txt);
+                system("pause");
                 break;
 
             case 0:
+                system("cls");
                 cout << "Saliendo..." << endl;
                 break;
             
@@ -120,7 +164,6 @@ void Menu(string Archivo_Registro_Estudiantes, string Archivo_crear_curso, strin
         }
         cout << endl;
     } while (opcion!=0);
-        
 }
 
 #endif

@@ -132,12 +132,7 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
 
     while (archivoIns.read((char*)&ins, sizeof(Inscripcion)))
     {
-        // Guardar posición actual antes de avanzar
         pos = archivoIns.tellg() - sizeof(Inscripcion);
-
-        cout << "Leyendo registro: CI " << ins.CI_estudiante 
-             << " | Curso: " << ins.codigoCurso 
-             << " | Estado: " << Estado[ins.estado_inscripcion - 1] << endl;
 
         if (ins.CI_estudiante == CI_buscar)
         {
@@ -163,22 +158,18 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
 
             bool fue_pendiente_a_aceptado = (ins.estado_inscripcion == 3 && nuevo_estado == 1);
 
-            // Actualizar estado
             ins.estado_inscripcion = nuevo_estado;
 
-            // Volver a la posición guardada y sobrescribir
             archivoIns.seekp(pos);
             archivoIns.write((char*)&ins, sizeof(Inscripcion));
 
-            // Volver a posición de lectura para continuar correctamente
             archivoIns.seekg(pos + sizeof(Inscripcion));
 
             cout << "Estado actualizado a: " << Estado[nuevo_estado - 1] << endl;
 
-            // === REDUCIR CUPO SI PASÓ DE PENDIENTE A ACEPTADO ===
             if (fue_pendiente_a_aceptado)
             {
-                // (Código de reducción de cupo que ya tienes, con mensajes de depuración si quieres)
+
                 fstream archivoCursos(Archivo_crear_curso, ios::binary | ios::in | ios::out);
                 if (archivoCursos)
                 {
@@ -215,9 +206,6 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
                     cout << "No se pudo abrir archivo de cursos para reducir cupo." << endl;
                 }
             }
-
-            // Puedes agregar break; si solo quieres modificar la primera coincidencia
-            // O quitarlo si un estudiante puede tener múltiples inscripciones
         }
     }
 
@@ -229,69 +217,57 @@ void ModificarEstadoInscripcion(string Archivo_Inscripcion, string Archivo_crear
     }
 }
 
-void MostrarInscripciones(const string& Archivo_Inscripcion, const string& Archivo_Txt_Salida = "Lista_Inscripciones.txt")
-{
-    ifstream archivo_bin(Archivo_Inscripcion, ios::binary);
-    ofstream archivo_txt(Archivo_Txt_Salida);
 
-    if (!archivo_bin)
+void MostrarInscripciones(string Archivo_Inscripcion, string Archivo_Inscritos_txt)
+{
+    ifstream archivo;
+    archivo.open(Archivo_Inscripcion, ios::binary);
+    ofstream archivo_txt;
+    archivo_txt.open(Archivo_Inscritos_txt);
+    if (!archivo)
     {
-        cout << "Error: No se pudo abrir el archivo de inscripciones.\n";
-        system("pause");
+        cout << "Error al abrir el archivo de inscripciones." << endl;
         return;
     }
 
     if (!archivo_txt)
     {
         cout << "Error: No se pudo crear el archivo de texto.\n";
-        archivo_bin.close();
+        archivo.close();
         system("pause");
         return;
-    }
-
+    } 
+    
     Inscripcion ins;
-    vector<string> Estados = {"", "ACEPTADO", "RECHAZADO", "PENDIENTE"};
+    vector<string> Estado = {"ACEPTADO", "RECHAZADO", "PENDIENTE"};
     bool hayInscripciones = false;
 
-    system("cls");
-    cout << "\n\t\t===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
+    cout << "----- LISTA DE TODAS LAS INSCRIPCIONES -----" << endl;
+    archivo_txt << "----- LISTA DE TODAS LAS INSCRIPCIONES -----" << endl;
 
-    archivo_txt << "===== LISTA COMPLETA DE INSCRIPCIONES =====\n\n";
-
-    while (archivo_bin.read((char*)&ins, sizeof(Inscripcion)))
+    while (archivo.read((char*)&ins, sizeof(Inscripcion)))
     {
         hayInscripciones = true;
 
-        string estado_str = (ins.estado_inscripcion >= 1 && ins.estado_inscripcion <= 3)? Estados[ins.estado_inscripcion]: "DESCONOCIDO";
+        cout << "CI Estudiante: " << ins.CI_estudiante << endl;
+        cout << "Código Curso: " << ins.codigoCurso << endl;
+        cout << "Fecha: " << ins.fecha_inscripcion << endl;
+        cout << "Estado: " << Estado[ins.estado_inscripcion - 1] << endl;
+        cout << "-------------------------------------------" << endl;
 
-        cout << "CI del Estudiante    : " << ins.CI_estudiante << endl;
-        cout << "Código del Curso     : " << ins.codigoCurso << endl;
-        cout << "Fecha de Inscripción : " << ins.fecha_inscripcion << endl;
-        cout << "Estado               : " << estado_str << endl;
-        cout << "----------------------------------------" << endl;
-
-        archivo_txt << "CI del Estudiante    : " << ins.CI_estudiante << endl;
-        archivo_txt << "Código del Curso     : " << ins.codigoCurso << endl;
-        archivo_txt << "Fecha de Inscripción : " << ins.fecha_inscripcion << endl;
-        archivo_txt << "Estado               : " << estado_str << endl;
-        archivo_txt << "----------------------------------------" << endl;
+        archivo_txt << "CI Estudiante: " << ins.CI_estudiante << endl;
+        archivo_txt << "Código Curso: " << ins.codigoCurso << endl;
+        archivo_txt << "Fecha: " << ins.fecha_inscripcion << endl;
+        archivo_txt << "Estado: " << Estado[ins.estado_inscripcion - 1] << endl;
+        archivo_txt << "-------------------------------------------" << endl;
     }
 
     if (!hayInscripciones)
     {
-        cout << "No hay inscripciones registradas en el sistema.\n";
-        archivo_txt << "No hay inscripciones registradas en el sistema.\n";
-    }
-    else
-    {
-        cout << "\nReporte generado correctamente en: " << Archivo_Txt_Salida << endl;
+        cout << "No hay inscripciones registradas en el archivo." << endl;
     }
 
-    cout << "\n";
-    system("pause");
-
-    archivo_bin.close();
-    archivo_txt.close();
+    archivo.close();
 }
 
 #endif

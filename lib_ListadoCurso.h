@@ -33,11 +33,11 @@ string obtenerNombreEstudiante(int CI_estudiante, string Archivo_Registro_Estudi
     return "Estudiante no encontrado";
 }
 
-void listarEstudiantesPorCurso(int codigoCurso, string Archivo_Inscripcion, string Archivo_Registro_Estudiantes)
+void listarEstudiantesPorCurso(int codigoCurso, string Archivo_Inscripcion, string Archivo_Registro_Estudiantes) 
 {
     ifstream archivoInscrip;
     archivoInscrip.open(Archivo_Inscripcion, ios::binary);
-    if (!archivoInscrip)
+    if (!archivoInscrip) 
     {
         cout << "Error al abrir el archivo de inscripciones." << endl;
         return;
@@ -46,47 +46,47 @@ void listarEstudiantesPorCurso(int codigoCurso, string Archivo_Inscripcion, stri
     vector<int> estudiantesInscritos;
     Inscripcion ins;
     bool encontrado = false;
-
-    while (archivoInscrip.read((char*)&ins, sizeof(Inscripcion)))
+    while (archivoInscrip.read((char*)&ins, sizeof(Inscripcion))) 
     {
-        if (ins.codigoCurso == codigoCurso && ins.estado_inscripcion == 1)
-        {
+        if (ins.codigoCurso == codigoCurso && ins.estado_inscripcion == 1) 
+        { 
             estudiantesInscritos.push_back(ins.CI_estudiante);
             encontrado = true;
         }
     }
     archivoInscrip.close();
 
-    if (!encontrado)
+    if (!encontrado) 
     {
         cout << "No hay estudiantes inscritos en este curso o el curso no existe." << endl;
         return;
     }
 
+    system("cls");
     cout << "-----LISTA DE INSCRITOS EN EL  CURSO " << codigoCurso << "-----" << endl;
     cout << "No. \tCI \t\tNOMBRE" << endl;
-
-    for (size_t i = 0; i < estudiantesInscritos.size(); ++i)
+    for (size_t i = 0; i < estudiantesInscritos.size(); ++i) 
     {
         string nombre = obtenerNombreEstudiante(estudiantesInscritos[i], Archivo_Registro_Estudiantes);
         cout << i + 1 << ". \t" << estudiantesInscritos[i] << " \t" << nombre << endl;
     }
 
-    ofstream archivo_txt("Lista_Estudiantes_Curso_" + to_string(codigoCurso) + ".txt");
+    ofstream archivo_Lista_txt;
+    archivo_Lista_txt.open("Lista_Curso" + to_string(codigoCurso) + ".txt");
 
-    if (archivo_txt.is_open())
+    if (archivo_Lista_txt.is_open())
     {
-        archivo_txt << "-----LISTA DE INSCRITOS EN EL CURSO " << codigoCurso << "-----" << endl;
-        archivo_txt << "No. \tCI \t\tNOMBRE" << endl;
+        archivo_Lista_txt << "-----LISTA DE INSCRITOS EN EL CURSO " << codigoCurso << "-----" << endl;
+        archivo_Lista_txt << "No. \tCI \t\tNOMBRE" << endl;
 
         for (size_t i = 0; i < estudiantesInscritos.size(); ++i)
         {
             string nombre = obtenerNombreEstudiante(estudiantesInscritos[i], Archivo_Registro_Estudiantes);
-            archivo_txt << i + 1 << ". \t" << estudiantesInscritos[i] << " \t" << nombre << endl;
+            archivo_Lista_txt << i + 1 << ". \t" << estudiantesInscritos[i] << " \t" << nombre << endl;
         }
 
-        archivo_txt.close();
-        cout << "\nLista guardada en: Lista_Estudiantes_Curso_" << codigoCurso << ".txt" << endl;
+        archivo_Lista_txt.close();
+        cout << "\nLista guardada en txt" << endl;
     }
     else
     {

@@ -125,7 +125,7 @@ void Modificar_Nota(string Archivo_Registro_Notas)
             archivo.seekp(posicion);
             archivo.write((char*)&nota, sizeof(Notas_estudiante));
 
-            cout << "\n¡Notas modificadas correctamente!" << endl;
+            cout << "\nNotas modificadas correctamente" << endl;
             cout << "Nuevo promedio: " << nota.Promedio << endl;
 
             break;  
